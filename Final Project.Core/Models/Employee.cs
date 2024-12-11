@@ -16,7 +16,7 @@ namespace FinalProject.Core.Models
         public string Password { get; set; }
         public string Job_Title { get; set; }
         public string Resume { get; set; }
-
+        public string Image {  get; set; }
         //[ForeignKey("Department")]
         //public int DepartmentId { get; set; }
         [JsonIgnore]

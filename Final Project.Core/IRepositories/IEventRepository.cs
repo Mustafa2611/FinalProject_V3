@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +14,7 @@ namespace FinalProject.Core.IRepositories
 
         public string UploadEventImage(IFormFile Image, int? EventId);
         public string UploadEventImage(IFormFile Image, Event? Event);
+        public Task<IEnumerable<Event>> GetLastFourAsync();
 
 
         //Task<IEnumerable<Event>> GetAllAsync();

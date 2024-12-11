@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using System.Linq.Expressions;
 
 namespace FinalProject.EF.RepositoriesImplementation
 {
@@ -53,7 +54,7 @@ namespace FinalProject.EF.RepositoriesImplementation
 
         public string UploadEventImage(IFormFile Image, Event? Event)
         {
-            var validExtentions = new List<string>() { ".pdf", ".docx" };
+            var validExtentions = new List<string>() { ".jpg", ".png", ".jpeg", ".bmp", ".webp" };
             var extention = Path.GetExtension(Image.FileName);
             if (!validExtentions.Contains(extention)) return $"Extention is not valid {string.Join(',', validExtentions)}";
 
@@ -73,6 +74,16 @@ namespace FinalProject.EF.RepositoriesImplementation
             _context.SaveChanges();
 
             return Event.Image;
+        }
+
+        public async Task<IEnumerable<Event>> GetLastFourAsync()
+        {
+            var entitys = _context.Set<Event>().OrderByDescending(e => e.English_Event_Start_Date).Take(4).ToListAsync();
+            //if (includes != null)
+            //    foreach (var include in includes)
+            //        query = query.Include(include);
+
+            return await entitys;
         }
     }
 }

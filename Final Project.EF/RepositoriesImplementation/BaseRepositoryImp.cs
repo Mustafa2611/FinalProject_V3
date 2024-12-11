@@ -61,6 +61,8 @@ namespace FinalProject.EF.RepositoriesImplementation
             return await query.ToListAsync();
         }
 
+        
+
         public async Task<T> UpdateAsync(T entity)
         {
             if (entity == null)
@@ -77,6 +79,8 @@ namespace FinalProject.EF.RepositoriesImplementation
             _context.Set<T>().Remove(entity);
             return entity;
         }
+
+
 
         
     }

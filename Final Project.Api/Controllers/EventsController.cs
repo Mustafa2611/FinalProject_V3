@@ -53,7 +53,7 @@ namespace FinalProject.Api.Controllers
 
         [HttpGet("/Get_Event_By_Id/{id}")]
         public async Task<IActionResult> Get(int id) {
-            var Event = await _unitOfWork.Events.GetByIdAsync(e=> e.EventId == id , new[] {"College"});
+            var Event = await _unitOfWork.Events.GetByIdAsync(e=> e.EventId == id );
             if (Event == null) return NotFound("News not found");
 
             return Ok(Event);
@@ -62,7 +62,7 @@ namespace FinalProject.Api.Controllers
         [HttpGet("/Get_All_Events")]
         public async Task<IActionResult> GetAll()
         {
-            var Events = await _unitOfWork.Events.GetAllAsync(null,new[] { "College" } );
+            var Events = await _unitOfWork.Events.GetAllAsync(null);
             if (Events == null) return NotFound("There is no news created");
 
             return Ok(Events);
@@ -71,8 +71,8 @@ namespace FinalProject.Api.Controllers
         [HttpGet("/Get_last_Events")]
         public async Task<IActionResult> GetLastEvents()
         {
-            var Events = await _unitOfWork.Events.GetAllAsync(null, new[] { "College" });
-            if (Events == null) return NotFound("There is no news created");
+            var Events = await _unitOfWork.Events.GetLastFourAsync();
+            if (Events == null) return NotFound("There is no Event created");
 
             return Ok(Events);
         }
@@ -81,7 +81,7 @@ namespace FinalProject.Api.Controllers
         [HttpPut("/Update_Event")]
         public async Task<IActionResult> Update(UpdateEvent EventDto)
         {
-            Event Event = await _unitOfWork.Events.GetByIdAsync(e => e.EventId == EventDto.EventId, new[] { "College" });
+            Event Event = await _unitOfWork.Events.GetByIdAsync(e => e.EventId == EventDto.EventId);
 
             if ( Event == null) return NotFound("Event Not Found");
 
@@ -110,7 +110,7 @@ namespace FinalProject.Api.Controllers
         [HttpDelete("/Delete_Event/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var Event = await _unitOfWork.Events.GetByIdAsync(e => e.EventId == id, new[] { "College" });
+            var Event = await _unitOfWork.Events.GetByIdAsync(e => e.EventId == id);
             if (Event == null)
                 return NotFound("Event Not Found");
 

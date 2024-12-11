@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
 
 namespace FinalProject.EF.RepositoriesImplementation
 {
@@ -24,6 +25,11 @@ namespace FinalProject.EF.RepositoriesImplementation
 
         }
 
+        public async Task<IEnumerable<News>> GetLastFourAsync()
+        {
+            var entitys = _context.Set<News>().OrderByDescending(n=> n.English_News_Date).Take(4).ToListAsync();
+            return await entitys;
+        }
 
         public string UploadNewsImage(IFormFile Image, int? NewsId)
         {
@@ -55,7 +61,7 @@ namespace FinalProject.EF.RepositoriesImplementation
 
         public string UploadNewsImage(IFormFile Image, News? News)
         {
-            var validExtentions = new List<string>() { ".pdf", ".docx" };
+            var validExtentions = new List<string>() { ".jpg", ".png", ".jpeg", ".bmp", ".webp" };
             var extention = Path.GetExtension(Image.FileName);
             if (!validExtentions.Contains(extention)) return $"Extention is not valid {string.Join(',', validExtentions)}";
 

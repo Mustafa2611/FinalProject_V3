@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace FinalProject.EF.RepositoriesImplementation
 {
@@ -75,6 +76,59 @@ namespace FinalProject.EF.RepositoriesImplementation
              _context.SaveChanges();
 
             return employee.Resume;
+        }
+
+        public string UploadImage(IFormFile Image, int? Id)
+        {
+
+            var employee = _context.Employees.Find(Id);
+            //if (employee == null) return null;
+            _context.Entry(employee).State = EntityState.Detached;
+
+            var validExtentions = new List<string>() { ".jpg", ".png", ".jpeg", ".bmp", ".webp" };
+            var extention = Path.GetExtension(Image.FileName);
+            if (!validExtentions.Contains(extention)) return $"Extention is not valid {string.Join(',', validExtentions)}";
+
+            long size = Image.Length;
+            if (size > (5 * 1024 * 1024))
+                return $"Maximum size can be 5mb";
+
+            //var filename = Guid.NewGuid().ToString() + extention;
+            var filename = Guid.NewGuid() + Path.GetFileName(Image.FileName);
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+            FileStream stream = new FileStream(Path.Combine(path, filename), FileMode.Create);
+
+            Image.CopyTo(stream);
+
+            employee.Image = filename;
+            _context.SaveChanges();
+
+            return employee.Image;
+        }
+
+        public string UploadImage(IFormFile Image, Employee? employee)
+        {
+            var validExtentions = new List<string>() { ".jpg", ".png", ".jpeg", ".bmp", ".webp" };
+            var extention = Path.GetExtension(Image.FileName);
+            if (!validExtentions.Contains(extention)) return $"Extention is not valid {string.Join(',', validExtentions)}";
+
+            long size = Image.Length;
+            if (size > (5 * 1024 * 1024))
+                return $"Maximum size can be 5mb";
+
+            //var filename = Guid.NewGuid().ToString() + extention;
+            var filename = Guid.NewGuid() + Path.GetFileName(Image.FileName);
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+            FileStream stream = new FileStream(Path.Combine(path, filename), FileMode.Create);
+
+            Image.CopyTo(stream);
+
+            employee.Image = filename;
+            _context.SaveChanges();
+
+            return employee.Image;
         }
 
         //public async Task<string> UploadEmployeeCVAsync(int employeeId , IFormFile CVFile , string uploadDirectory)

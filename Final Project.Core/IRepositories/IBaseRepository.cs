@@ -21,5 +21,7 @@ namespace FinalProject.Core.IRepositories
         Task<T> UpdateAsync(T entity);
 
         Task<T> DeleteAsync(int id);
+
+
     }
 }

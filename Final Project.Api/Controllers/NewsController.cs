@@ -68,6 +68,15 @@ namespace FinalProject.Api.Controllers
             return Ok(News);
         }
 
+        [HttpGet("/Get_last_News")]
+        public async Task<IActionResult> GetLastNews()
+        {
+            var News = await _unitOfWork.News.GetLastFourAsync();
+            if (News == null) return NotFound("There is no news created");
+
+            return Ok(News);
+        }
+
         [HttpPut("/Update_News")]
         public async Task<IActionResult> Update(UpdateNewsDto NewsDto)
         {

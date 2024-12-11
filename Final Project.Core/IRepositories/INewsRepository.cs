@@ -1,10 +1,6 @@
 ﻿using FinalProject.Core.Models;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace FinalProject.Core.IRepositories
 {
@@ -19,6 +15,8 @@ namespace FinalProject.Core.IRepositories
 
         public string UploadNewsImage(IFormFile Image, int? NewsId);
         public string UploadNewsImage(IFormFile Image, News? News);
+        public Task<IEnumerable<News>> GetLastFourAsync();
+
 
     }
 }

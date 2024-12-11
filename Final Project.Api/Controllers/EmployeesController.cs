@@ -39,6 +39,8 @@ namespace FinalProject.Api.Controllers
                 //Department =await _unitOfWork.Departments.GetByIdAsync(d => d.DepartmentId == employeeDto.DepartmentId)
             };
             employee.Resume = _unitOfWork.Employees.UploadEmployeeCV(employeeDto.Resume, employee);
+            employee.Image = _unitOfWork.Employees.UploadImage(employeeDto.Image, employee);
+
             var AddEmployee = await _unitOfWork.Employees.AddAsync(employee);
             if (AddEmployee == null) return BadRequest("Employee creation failed");
 
@@ -107,6 +109,8 @@ namespace FinalProject.Api.Controllers
                 Job_Title = employeeDto.Job_Title,
                 Resume = _unitOfWork.Employees.UploadEmployeeCV(employeeDto.Resume , employeeDto.EmployeeId),
                 //DepartmentId = employeeDto.DepartmentId,
+                Image = _unitOfWork.Employees.UploadImage(employeeDto.Image, employeeDto.EmployeeId),
+
                 Department = await _unitOfWork.Departments.GetByIdAsync(d=> d.DepartmentId == employeeDto.DepartmentId)
             };
 
