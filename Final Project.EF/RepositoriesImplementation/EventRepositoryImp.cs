@@ -46,10 +46,17 @@ namespace FinalProject.EF.RepositoriesImplementation
 
             Image.CopyTo(stream);
 
-            Event.Image = filename;
-            _context.SaveChanges();
+            var relativePath = $"/uploads/{filename}";
+            Event.Image = relativePath;
 
-            return Event.Image;
+            //Event.Image = filename;
+            _context.Events.Attach(Event);
+            _context.Entry(Event).Property(e => e.Image).IsModified = true;
+
+            _context.SaveChanges();
+            return relativePath;
+
+            //return Event.Image;
         }
 
         public string UploadEventImage(IFormFile Image, Event? Event)
@@ -70,10 +77,17 @@ namespace FinalProject.EF.RepositoriesImplementation
 
             Image.CopyTo(stream);
 
-            Event.Image= filename;
-            _context.SaveChanges();
+            var relativePath = $"/uploads/{filename}";
+            Event.Image = relativePath;
 
-            return Event.Image;
+            _context.Events.Attach(Event);
+            _context.Entry(Event).Property(e => e.Image).IsModified = true;
+
+            //Event.Image= filename;
+            _context.SaveChanges();
+            return relativePath;
+
+            //return Event.Image;
         }
 
         public async Task<IEnumerable<Event>> GetLastFourAsync()

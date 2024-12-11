@@ -44,10 +44,15 @@ namespace FinalProject.EF.RepositoriesImplementation
 
             CvFile.CopyTo(stream);
 
-            employee.Resume = filename;
-             _context.SaveChanges();
+            var relativePath = $"/uploads/{filename}";
+            employee.Resume = relativePath;
 
-            return employee.Resume;
+            _context.Employees.Attach(employee);
+            _context.Entry(employee).Property(e => e.Resume).IsModified = true;
+            //employee.Resume = filename;
+            _context.SaveChanges();
+            return relativePath;
+            //return employee.Resume;
 
         }
 
@@ -72,10 +77,16 @@ namespace FinalProject.EF.RepositoriesImplementation
 
             CvFile.CopyTo(stream);
 
-            employee.Resume = filename;
-             _context.SaveChanges();
+            var relativePath = $"/uploads/{filename}";
+            employee.Resume = relativePath;
+            //employee.Resume = filename;
 
-            return employee.Resume;
+            _context.Employees.Attach(employee);
+            _context.Entry(employee).Property(e => e.Resume).IsModified = true;
+
+            _context.SaveChanges();
+            return relativePath;
+            //return employee.Resume;
         }
 
         public string UploadImage(IFormFile Image, int? Id)
@@ -101,10 +112,16 @@ namespace FinalProject.EF.RepositoriesImplementation
 
             Image.CopyTo(stream);
 
-            employee.Image = filename;
-            _context.SaveChanges();
+            var relativePath = $"/uploads/{filename}";
+            employee.Image = relativePath;
+            //employee.Image = filename;
 
-            return employee.Image;
+            _context.Employees.Attach(employee);
+            _context.Entry(employee).Property(e => e.Image).IsModified = true;
+
+            _context.SaveChanges();
+            return relativePath;
+            //return employee.Image;
         }
 
         public string UploadImage(IFormFile Image, Employee? employee)
@@ -124,11 +141,17 @@ namespace FinalProject.EF.RepositoriesImplementation
             FileStream stream = new FileStream(Path.Combine(path, filename), FileMode.Create);
 
             Image.CopyTo(stream);
+            var relativePath = $"/uploads/{filename}";
+            employee.Image = relativePath;
 
-            employee.Image = filename;
+
+            _context.Employees.Attach(employee);
+            _context.Entry(employee).Property(e => e.Image).IsModified = true;
+
+            //employee.Image = filename;
             _context.SaveChanges();
-
-            return employee.Image;
+            return relativePath;
+            //return employee.Image;
         }
 
         //public async Task<string> UploadEmployeeCVAsync(int employeeId , IFormFile CVFile , string uploadDirectory)

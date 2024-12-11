@@ -53,10 +53,17 @@ namespace FinalProject.EF.RepositoriesImplementation
 
             Image.CopyTo(stream);
 
-            News.Image = filename;
-            _context.SaveChanges();
+            var relativePath = $"/uploads/{filename}";
+            News.Image = relativePath;
 
-            return News.Image;
+            _context.News.Attach(News);
+            _context.Entry(News).Property(e => e.Image).IsModified = true;
+
+            //News.Image = filename;
+            _context.SaveChanges();
+            return relativePath;
+
+            //return News.Image;
         }
 
         public string UploadNewsImage(IFormFile Image, News? News)
@@ -77,10 +84,17 @@ namespace FinalProject.EF.RepositoriesImplementation
 
             Image.CopyTo(stream);
 
-            News.Image = filename;
+            var relativePath = $"/uploads/{filename}";
+            News.Image = relativePath;
+            //News.Image = filename;
+
+            _context.News.Attach(News);
+            _context.Entry(News).Property(e => e.Image).IsModified = true;
+
             _context.SaveChanges();
 
-            return News.Image;
+            return relativePath;
+            //return News.Image;
         }
     }
 }
