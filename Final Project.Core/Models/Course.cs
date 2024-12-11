@@ -11,7 +11,9 @@ namespace FinalProject.Core.Models
     {
         public int CourseId { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
+        //public string Description { get; set; }
+        public string LevelYear { get; set; }
+        public string PdfDescription { get; set; }
 
         public int DepartmentId { get; set; }
         [JsonIgnore]
