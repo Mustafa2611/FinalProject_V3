@@ -31,11 +31,12 @@ namespace FinalProject.Api.Controllers
             Course course = new Course()
             {
                 Title = courseDto.Title,
-                Description = courseDto.Description,
+                LevelYear = courseDto.LevelYear,
+                //Description = courseDto.Description,
                 DepartmentId = courseDto.DepartmentId,
                 //Department =await _unitOfWork.Departments.GetByIdAsync(d => d.DepartmentId == courseDto.DepartmentId)
             };
-
+            course.PdfDescription = _unitOfWork.Courses.UploadCourseFile(courseDto.PdfDescription, course);
             var AddCourse = await _unitOfWork.Courses.AddAsync(course);
             if ( AddCourse == null) return BadRequest("Add Course operation failed ");
 
@@ -78,8 +79,10 @@ namespace FinalProject.Api.Controllers
             {
                 CourseId = courseDto.CourseId,
                 Title = courseDto.Title,
-                Description = courseDto.Description,
-                DepartmentId = courseDto.DepartmentId,
+                 LevelYear = courseDto.LevelYear,
+
+                 PdfDescription = _unitOfWork.Courses.UploadCourseFile(courseDto.PdfDescription, courseDto.CourseId),
+                 DepartmentId = courseDto.DepartmentId,
                 //Department = await _unitOfWork.Departments.GetByIdAsync(d => d.DepartmentId == courseDto.DepartmentId)
 
             };
