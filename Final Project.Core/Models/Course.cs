@@ -15,8 +15,8 @@ namespace FinalProject.Core.Models
         public string LevelYear { get; set; }
         public string PdfDescription { get; set; }
 
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
         [JsonIgnore]
-        public Department Department { get; set; }
+        public Department? Department { get; set; }
     }
 }
