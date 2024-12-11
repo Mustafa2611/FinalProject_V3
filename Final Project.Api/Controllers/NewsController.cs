@@ -77,6 +77,22 @@ namespace FinalProject.Api.Controllers
             return Ok(News);
         }
 
+        [HttpGet("/Search_For_Arabic_News")]
+        public async Task<ActionResult> SearchArabicNews(string SearchString)
+        {
+            var news = _unitOfWork.News.SearchForArabicNews(SearchString);
+            if (news == null) return NotFound("There is no news in this description");
+            return Ok(news);
+        }
+
+        [HttpGet("/Search_For_English_News")]
+        public async Task<ActionResult> SearchEnglishNews(string SearchString)
+        {
+            var news = _unitOfWork.News.SearchForEnglishNews(SearchString);
+            if (news == null) return NotFound("There is no news in this description");
+            return Ok(news);
+        }
+
         [HttpPut("/Update_News")]
         public async Task<IActionResult> Update(UpdateNewsDto NewsDto)
         {

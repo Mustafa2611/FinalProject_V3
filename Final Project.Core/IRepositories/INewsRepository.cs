@@ -16,6 +16,8 @@ namespace FinalProject.Core.IRepositories
         public string UploadNewsImage(IFormFile Image, int? NewsId);
         public string UploadNewsImage(IFormFile Image, News? News);
         public Task<IEnumerable<News>> GetLastFourAsync();
+        public Task<IEnumerable<News>> SearchForArabicNews(string searchString);
+        public Task<IEnumerable<News>> SearchForEnglishNews(string searchString);
 
 
     }

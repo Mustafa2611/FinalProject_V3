@@ -99,5 +99,6 @@ namespace FinalProject.EF.RepositoriesImplementation
 
             return await entitys;
         }
+
     }
 }

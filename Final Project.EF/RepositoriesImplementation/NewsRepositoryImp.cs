@@ -96,5 +96,22 @@ namespace FinalProject.EF.RepositoriesImplementation
             return relativePath;
             //return News.Image;
         }
+
+        public async Task<IEnumerable<News>> SearchForEnglishNews(string searchString)
+        {
+            var news = _context.Set<News>().Where(e => e.EnglishDescription.Contains(searchString));
+            if (news.Any())
+                return news;
+            return null;
+        }
+
+        public async Task<IEnumerable<News>> SearchForArabicNews(string searchString)
+        {
+            var news = _context.Set<News>().Where(e => e.ArabicDescription.Contains(searchString));
+            if (news.Any())
+                return news;
+            return null;
+        }
+
     }
 }
