@@ -30,10 +30,13 @@ namespace FinalProject.Api.Controllers
         {
             var employee = new Employee()
             {
-                Name = employeeDto.Name,
+                ArabicName = employeeDto.ArabicName,
+                EnglishName = employeeDto.EnglishName,
                 Email = employeeDto.Email,
                 Password = employeeDto.Password,
-                Job_Title = employeeDto.Job_Title,
+                ArabicJob_Title = employeeDto.ArabicJob_Title,
+                EnglishJob_Title = employeeDto.EnglishJob_Title,
+
                 //Resume =  _unitOfWork.Employees.UploadEmployeeCV(employeeDto.Resume , null).ToString(),
                 //DepartmentId = employeeDto.DepartmentId
                 //Department =await _unitOfWork.Departments.GetByIdAsync(d => d.DepartmentId == employeeDto.DepartmentId)
@@ -103,10 +106,12 @@ namespace FinalProject.Api.Controllers
             employee = new Employee()
             {
                 EmployeeId = employeeDto.EmployeeId,
-                Name = employeeDto.Name,
+                ArabicName = employeeDto.ArabicName,
+                EnglishName = employeeDto.EnglishName,
                 Email = employeeDto.Email,
                 Password = employeeDto.Password,
-                Job_Title = employeeDto.Job_Title,
+                ArabicJob_Title = employeeDto.ArabicJob_Title,
+                EnglishJob_Title = employeeDto.EnglishJob_Title,
                 Resume = _unitOfWork.Employees.UploadEmployeeCV(employeeDto.Resume , employeeDto.EmployeeId),
                 //DepartmentId = employeeDto.DepartmentId,
                 Image = _unitOfWork.Employees.UploadImage(employeeDto.Image, employeeDto.EmployeeId),

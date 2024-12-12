@@ -32,8 +32,11 @@ namespace FinalProject.Api.Controllers
         {
             Department department = new Department()
             {
-                Name = departmentDto.Name,
-                Description = departmentDto.Description,
+                ArabicTitle = departmentDto .ArabicTitle,
+                EnglishTitle = departmentDto.EnglishTitle,
+
+                ArabicDescription = departmentDto.ArabicDescription,
+                EnglishDescription = departmentDto.EnglishDescription,
                 
                 Head_Of_Department = await _unitOfWork.Employees.GetByIdAsync(e => e.EmployeeId == departmentDto.HeadOfDepartmentId),
 
@@ -78,15 +81,18 @@ namespace FinalProject.Api.Controllers
              department = new Department()
             {
                 DepartmentId = departmentDto.DepartmentId,
-                Name = departmentDto.Name,
-                Description = departmentDto.Description,
+                 ArabicTitle = departmentDto.ArabicTitle,
+                 EnglishTitle = departmentDto.EnglishTitle,
 
-                
-                //College = await _unitOfWork.Colleges.GetByIdAsync(c => c.CollegeId == departmentDto.CollegeId),
+                 ArabicDescription = departmentDto.ArabicDescription,
+                 EnglishDescription = departmentDto.EnglishDescription,
 
-                //Head_Of_DepartmentEmployeeId = departmentDto.HeadOfDepartmentId,
-                //Head_Of_Department = await _unitOfWork.Employees.GetByIdAsync(e => e.EmployeeId == departmentDto.HeadOfDepartmentId),
-            };
+
+                 //College = await _unitOfWork.Colleges.GetByIdAsync(c => c.CollegeId == departmentDto.CollegeId),
+
+                 //Head_Of_DepartmentEmployeeId = departmentDto.HeadOfDepartmentId,
+                 //Head_Of_Department = await _unitOfWork.Employees.GetByIdAsync(e => e.EmployeeId == departmentDto.HeadOfDepartmentId),
+             };
 
             var UpdateDepartment = await _unitOfWork.Departments.UpdateAsync(department);
             if (UpdateDepartment == null) return BadRequest("Update department operation failed.");

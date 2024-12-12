@@ -9,8 +9,11 @@ namespace FinalProject.Core.Dtos.DepartmentDtos
     public class CreateDepartmentDto
     {
         //public int DepartmentId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string ArabicTitle { get; set; }
+        public string EnglishTitle { get; set; }
+
+        public string ArabicDescription { get; set; }
+        public string EnglishDescription { get; set; }
         public int CollegeId { get; set; }
         public int HeadOfDepartmentId { get; set; }
         //public int EmployeeCount { get; set; }

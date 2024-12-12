@@ -9,8 +9,12 @@ namespace FinalProject.Core.Models
     public class Unit
     {
         public int UnitId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string ArabicTitle{ get; set; }
+        public string EnglishTitle { get; set; }
+
+
+        public string ArabicDescription { get; set; }
+        public string EnglishDescription { get; set; }
 
         public Employee? Head_Of_Unit { get; set; }
 
