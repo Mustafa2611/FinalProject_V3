@@ -55,8 +55,8 @@ namespace FinalProject.EF.Configuration
 
            
 
-            modelBuilder.Entity<Quality>()
-                .HasData(new Quality { Id = 1 , Name = "Quality 1 Name" , Description = "Quality 1 Description"});
+            //modelBuilder.Entity<Quality>()
+            //    .HasData(new Quality { Id = 1 , Name = "Quality 1 Name" , Description = "Quality 1 Description"});
 
         }
 

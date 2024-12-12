@@ -28,7 +28,7 @@ namespace FinalProject.Api.Controllers
 
         // POST: api/Department/Create_Department
         [HttpPost("/Create_Department")]
-        public async Task<IActionResult> Create(CreateDepartmentDto departmentDto)
+        public async Task<ActionResult> Create(CreateDepartmentDto departmentDto)
         {
             Department department = new Department()
             {
@@ -51,7 +51,7 @@ namespace FinalProject.Api.Controllers
 
         // GET: api/Department/Get_Department_By_Id/{id}
         [HttpGet("/Get_Department_By_Id/{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
             Department department =await _unitOfWork.Departments.GetByIdAsync(d => d.DepartmentId == id, new[] { "College", "Head_Of_Department", "Employees", "Courses" });
             if (department == null) return NotFound("Department not found");
@@ -61,7 +61,7 @@ namespace FinalProject.Api.Controllers
 
         // GET: api/Department/Get_All_Departments
         [HttpGet("/Get_All_Departments")]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult> GetAll()
         {
             IEnumerable<Department> departments =await _unitOfWork.Departments.GetAllAsync(null,new[] { "College" , "Head_Of_Department" , "Employees" , "Courses" });
             if (departments == null) return NotFound("There is no department created yet");
@@ -71,7 +71,7 @@ namespace FinalProject.Api.Controllers
 
         // PUT: api/Department/Update_Department
         [HttpPut("/Update_Department")]
-        public async Task<IActionResult> Update(UpdateDepartmentDto departmentDto)
+        public async Task<ActionResult> Update(UpdateDepartmentDto departmentDto)
         {
             var department =await _unitOfWork.Departments.GetByIdAsync(d => d.DepartmentId == departmentDto.DepartmentId, new[] { "College" });
 
@@ -101,7 +101,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpPut("/Add_Emloyee_To_Departmet")]
-        public async Task<IActionResult> AddEmployeeToDepartment(AddEmplyeeToDepartment AddEmployeeDto)
+        public async Task<ActionResult> AddEmployeeToDepartment(AddEmplyeeToDepartment AddEmployeeDto)
         {
 
 
@@ -122,7 +122,7 @@ namespace FinalProject.Api.Controllers
 
 
         [HttpPut("/Remove_Emloyee_From_Department")]
-        public async Task<IActionResult> RemoveEmployeeFromDepartment(AddEmplyeeToDepartment AddEmployeeDto)
+        public async Task<ActionResult> RemoveEmployeeFromDepartment(AddEmplyeeToDepartment AddEmployeeDto)
         {
             var employee = await _unitOfWork.Employees.GetByIdAsync(e => e.EmployeeId == AddEmployeeDto.EmployeeId);
             if (employee == null) return NotFound("Employee not found");
@@ -142,7 +142,7 @@ namespace FinalProject.Api.Controllers
 
         // DELETE: api/Department/Delete_Department/{id}
         [HttpDelete("/Delete_Department/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             Department department =await _unitOfWork.Departments.GetByIdAsync(d => d.DepartmentId == id, new[] { "College" });
             if (department == null) return NotFound("Department Not Found");

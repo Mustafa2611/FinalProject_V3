@@ -26,7 +26,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpPost("/Create_Event")]
-        public async Task<IActionResult> Create(CreateEvent EventDto) {
+        public async Task<ActionResult> Create(CreateEvent EventDto) {
             Event Event = new Event()
             {
                 ArabicTitle = EventDto.ArabicTitle,
@@ -52,7 +52,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpGet("/Get_Event_By_Id/{id}")]
-        public async Task<IActionResult> Get(int id) {
+        public async Task<ActionResult> Get(int id) {
             var Event = await _unitOfWork.Events.GetByIdAsync(e=> e.EventId == id );
             if (Event == null) return NotFound("News not found");
 
@@ -60,7 +60,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpGet("/Get_All_Events")]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult> GetAll()
         {
             var Events = await _unitOfWork.Events.GetAllAsync(null);
             if (Events == null) return NotFound("There is no news created");
@@ -69,7 +69,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpGet("/Get_last_Events")]
-        public async Task<IActionResult> GetLastEvents()
+        public async Task<ActionResult> GetLastEvents()
         {
             var Events = await _unitOfWork.Events.GetLastFourAsync();
             if (Events == null) return NotFound("There is no Event created");
@@ -79,7 +79,7 @@ namespace FinalProject.Api.Controllers
 
 
         [HttpPut("/Update_Event")]
-        public async Task<IActionResult> Update(UpdateEvent EventDto)
+        public async Task<ActionResult> Update(UpdateEvent EventDto)
         {
             Event Event = await _unitOfWork.Events.GetByIdAsync(e => e.EventId == EventDto.EventId);
 
@@ -108,7 +108,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpDelete("/Delete_Event/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var Event = await _unitOfWork.Events.GetByIdAsync(e => e.EventId == id);
             if (Event == null)

@@ -25,7 +25,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpPost("/Create_News")]
-        public async Task<IActionResult> Create(CreateNewsDto NewsDto)
+        public async Task<ActionResult> Create(CreateNewsDto NewsDto)
         {
             News News = new News()
             {
@@ -51,7 +51,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpGet("/Get_News_By_Id/{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
             var News = await _unitOfWork.News.GetByIdAsync(n => n.NewsId == id, new[] { "College" });
             if (News == null) return NotFound("News not found");
@@ -60,7 +60,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpGet("/Get_All_News")]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult> GetAll()
         {
             var News = await _unitOfWork.News.GetAllAsync(null,new[] {"College"});
             if (News == null) return NotFound("There is no news created");
@@ -69,7 +69,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpGet("/Get_last_News")]
-        public async Task<IActionResult> GetLastNews()
+        public async Task<ActionResult> GetLastNews()
         {
             var News = await _unitOfWork.News.GetLastFourAsync();
             if (News == null) return NotFound("There is no news created");
@@ -94,7 +94,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpPut("/Update_News")]
-        public async Task<IActionResult> Update(UpdateNewsDto NewsDto)
+        public async Task<ActionResult> Update(UpdateNewsDto NewsDto)
         {
             News News = await _unitOfWork.News.GetByIdAsync(n => n.NewsId == NewsDto.NewsId, new[] { "College" });
             
@@ -125,7 +125,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpDelete("/Delete_News/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var News = await _unitOfWork.News.GetByIdAsync(n => n.NewsId == id, new[] { "College" });
             if (News == null) return NotFound("News Not Found");
