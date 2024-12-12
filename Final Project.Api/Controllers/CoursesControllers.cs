@@ -26,7 +26,7 @@ namespace FinalProject.Api.Controllers
 
         // POST: api/Course/Create_Course
         [HttpPost("/Create_Course")]
-        public async Task<IActionResult> Create(CreateCourseDto courseDto)
+        public async Task<ActionResult> Create(CreateCourseDto courseDto)
         {
             Course course = new Course()
             {
@@ -47,7 +47,7 @@ namespace FinalProject.Api.Controllers
 
         // GET: api/Course/Get_Course_By_Id/{id}
         [HttpGet("/Get_Course_By_Id/{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
             Course course =await _unitOfWork.Courses.GetByIdAsync(c => c.CourseId == id, new[] { "Department" });
             if (course == null)
@@ -58,7 +58,7 @@ namespace FinalProject.Api.Controllers
 
         // GET: api/Course/Get_All_Courses
         [HttpGet("/Get_All_Courses")]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult> GetAll()
         {
             IEnumerable<Course> courses =await _unitOfWork.Courses.GetAllAsync(null,new[] { "Department" });
             if (courses == null) return NotFound("There is no course created yet.");
@@ -68,7 +68,7 @@ namespace FinalProject.Api.Controllers
 
         // PUT: api/Course/Update_Course
         [HttpPut("/Update_Course")]
-        public async Task<IActionResult> Update(UpdateCourseDto courseDto)
+        public async Task<ActionResult> Update(UpdateCourseDto courseDto)
         {
             var course = await _unitOfWork.Courses.GetByIdAsync(c => c.CourseId == courseDto.CourseId, new[] { "Department" })
 ;            if ( course == null) return NotFound("Course not found");
@@ -98,7 +98,7 @@ namespace FinalProject.Api.Controllers
 
         // DELETE: api/Course/Delete_Course/{id}
         [HttpDelete("/Delete_Course/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             Course course =await _unitOfWork.Courses.GetByIdAsync(c => c.CourseId == id, new[] { "Department" });
             if (course == null) return NotFound("Course Not Found");

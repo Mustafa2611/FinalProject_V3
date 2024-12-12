@@ -27,7 +27,7 @@ namespace FinalProject.Api.Controllers
 
         // POST: api/Unit
         [HttpPost]
-        public async Task<IActionResult> Create( UnitCreateDto unitDto)
+        public async Task<ActionResult> Create( UnitCreateDto unitDto)
         {
             if (unitDto == null)
                 return BadRequest("Invalid unit data.");
@@ -63,7 +63,7 @@ namespace FinalProject.Api.Controllers
 
         // GET: api/Unit/{id}
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult> GetById(int id)
         {
             var unit =await _unitOfWork.Units.GetByIdAsync(u=> u.UnitId == id, new[] { "Head_Of_Unit", "Employees"  });
             if (unit == null)
@@ -74,7 +74,7 @@ namespace FinalProject.Api.Controllers
 
         // GET: api/Unit
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult> GetAll()
         {
             var units =await _unitOfWork.Units.GetAllAsync( null, new[] { "Head_Of_Unit", "Employees" });
             if (units == null || !units.Any())
@@ -85,7 +85,7 @@ namespace FinalProject.Api.Controllers
 
         // PUT: api/Unit/
         [HttpPut("")]
-        public async Task<IActionResult> Update( [FromBody] UnitUpdateDto unitDto)
+        public async Task<ActionResult> Update( [FromBody] UnitUpdateDto unitDto)
         {
             if (unitDto == null)
                 return BadRequest("Invalid unit data.");
@@ -133,7 +133,7 @@ namespace FinalProject.Api.Controllers
 
 
         [HttpPut("/Add_Emloyee_To_Unit")]
-        public async Task<IActionResult> AddEmployeeToUnit(AddEmployeeToUnit AddEmployeeDto)
+        public async Task<ActionResult> AddEmployeeToUnit(AddEmployeeToUnit AddEmployeeDto)
         {
             var employee = await _unitOfWork.Employees.GetByIdAsync(e => e.EmployeeId == AddEmployeeDto.EmployeeId);
             if (employee == null) return NotFound("Employee not found");
@@ -151,7 +151,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpPut("/Remove_Emloyee_From_Unit")]
-        public async Task<IActionResult> RemoveEmployeeFromUnit(AddEmployeeToUnit AddEmployeeDto)
+        public async Task<ActionResult> RemoveEmployeeFromUnit(AddEmployeeToUnit AddEmployeeDto)
         {
 
             var employee = await _unitOfWork.Employees.GetByIdAsync(e => e.EmployeeId == AddEmployeeDto.EmployeeId);
@@ -171,7 +171,7 @@ namespace FinalProject.Api.Controllers
 
         // DELETE: api/Unit/{id}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var unit =await _unitOfWork.Units.GetByIdAsync(u=> u.UnitId ==id, new[] { "Head_Of_Unit", "Employees" });
             if (unit == null)

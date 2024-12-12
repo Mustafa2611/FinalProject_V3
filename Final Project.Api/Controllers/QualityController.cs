@@ -27,7 +27,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpPost("/Add_Quality")]
-        public async Task<IActionResult> Create(AddQualityDto QualityDto)
+        public async Task<ActionResult> Create(AddQualityDto QualityDto)
         {
             var Quality = new Core.Models.Quality()
             {
@@ -46,7 +46,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpGet("/Get_Quality_By_Id/{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
             var Quality = await _unitOfWork.Qualities.GetByIdAsync(e => e.Id == id);
             if (Quality == null) return NotFound("News not found");
@@ -55,7 +55,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpGet("/Get_All_Qualitys")]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult> GetAll()
         {
             var Qualitys = await _unitOfWork.Qualities.GetAllAsync(null);
             if (Qualitys == null) return NotFound("There is no qualities created");
@@ -64,7 +64,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpPut("/Update_Quality")]
-        public async Task<IActionResult> Update(QualityDto QualityDto)
+        public async Task<ActionResult> Update(QualityDto QualityDto)
         {
             var Quality = await _unitOfWork.Qualities.GetByIdAsync(e => e.Id == QualityDto.Id);
 
@@ -88,7 +88,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpDelete("/Delete_Quality/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var Quality = await _unitOfWork.Qualities.GetByIdAsync(e => e.Id == id);
             if (Quality == null)

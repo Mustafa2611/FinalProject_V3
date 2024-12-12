@@ -25,7 +25,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpPost("/Create_News")]
-        public async Task<IActionResult> Create(CreateNewsDto NewsDto)
+        public async Task<ActionResult> Create(CreateNewsDto NewsDto)
         {
             News News = new News()
             {
@@ -50,31 +50,146 @@ namespace FinalProject.Api.Controllers
             return Ok(News);
         }
 
-        [HttpGet("/Get_News_By_Id/{id}")]
-        public async Task<IActionResult> Get(int id)
+        //[HttpGet("/Get_News_By_Id/{id}")]
+        //public async Task<ActionResult> Get(int id)
+        //{
+        //    var News = await _unitOfWork.News.GetByIdAsync(n => n.NewsId == id);
+        //    if (News == null) return NotFound("News not found");
+
+        //    return Ok(News);
+        //}
+
+        [HttpGet("/Get_Arabic_News_By_Id/{id}")]
+        public async Task<ActionResult> GetArabic(int id)
         {
-            var News = await _unitOfWork.News.GetByIdAsync(n => n.NewsId == id, new[] { "College" });
+            var News = await _unitOfWork.News.GetByIdAsync(n => n.NewsId == id);
             if (News == null) return NotFound("News not found");
 
-            return Ok(News);
+            ArabicNewsDto arabicNews = new ArabicNewsDto() { 
+                NewsId = News.NewsId,
+                ArabicTitle = News.ArabicTitle,
+                ArabicDescription = News.ArabicDescription ,
+                Arabic_News_Date = News.Arabic_News_Date,
+                Image = News.Image,
+            };
+
+            return Ok(arabicNews);
         }
 
-        [HttpGet("/Get_All_News")]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("/Get_English_News_By_Id/{id}")]
+        public async Task<ActionResult> GetEnglish(int id)
         {
-            var News = await _unitOfWork.News.GetAllAsync(null,new[] {"College"});
-            if (News == null) return NotFound("There is no news created");
+            var News = await _unitOfWork.News.GetByIdAsync(n => n.NewsId == id);
+            if (News == null) return NotFound("News not found");
 
-            return Ok(News);
+            EnglishNewsDto englishNews = new EnglishNewsDto()
+            {
+                NewsId = News.NewsId,
+                EnglishTitle = News.EnglishTitle,
+                EnglishDescription = News.EnglishDescription,
+                English_News_Date = News.English_News_Date,
+                Image = News.Image,
+            };
+
+            return Ok(englishNews);
         }
 
-        [HttpGet("/Get_last_News")]
-        public async Task<IActionResult> GetLastNews()
+        //[HttpGet("/Get_All_News")]
+        //public async Task<ActionResult> GetAll()
+        //{
+        //    var News = await _unitOfWork.News.GetAllAsync(null);
+        //    if (News == null) return NotFound("There is no news created");
+
+        //    return Ok(News);
+        //}
+
+        [HttpGet("/Get_All_Arabic_News")]
+        public async Task<ActionResult> GetAllArabic()
+        {
+            var AllNews = await _unitOfWork.News.GetAllAsync(null);
+            if (AllNews == null) return NotFound("There is no news created");
+
+            IEnumerable<ArabicNewsDto> arabicNews = new List<ArabicNewsDto>() { };
+            foreach(var news  in AllNews)
+            {
+                arabicNews.Append(new ArabicNewsDto() {
+                    NewsId = news.NewsId,
+                    ArabicTitle = news.ArabicTitle,
+                    ArabicDescription = news.ArabicDescription,
+                    Arabic_News_Date = news.Arabic_News_Date,
+                    Image = news.Image,
+                } );
+            }
+
+            return Ok(arabicNews);
+        }
+
+        [HttpGet("/Get_All_English_News")]
+        public async Task<ActionResult> GetAllEnglish()
+        {
+            var AllNews = await _unitOfWork.News.GetAllAsync(null);
+            if (AllNews == null) return NotFound("There is no news created");
+
+            IEnumerable<EnglishNewsDto> englishNews = new List<EnglishNewsDto>() { };
+            foreach (var news in AllNews)
+            {
+                englishNews.Append(new EnglishNewsDto()
+                {
+                    NewsId = news.NewsId,
+                    EnglishTitle = news.EnglishTitle,
+                    EnglishDescription = news.EnglishDescription,
+                    English_News_Date = news.English_News_Date,
+                    Image = news.Image,
+                });
+            }
+
+            return Ok(englishNews);
+        }
+
+
+        [HttpGet("/Get_last_Arabic_News")]
+        public async Task<ActionResult> GetLastArabicNews()
         {
             var News = await _unitOfWork.News.GetLastFourAsync();
             if (News == null) return NotFound("There is no news created");
 
-            return Ok(News);
+            IEnumerable<ArabicNewsDto> arabicNews = new List<ArabicNewsDto>() { };
+            foreach (var news in News)
+            {
+                arabicNews.Append(new ArabicNewsDto()
+                {
+                    NewsId = news.NewsId,
+                    ArabicTitle = news.ArabicTitle,
+                    ArabicDescription = news.ArabicDescription,
+                    Arabic_News_Date = news.Arabic_News_Date,
+                    Image = news.Image,
+                });
+            }
+
+
+            return Ok(arabicNews);
+        }
+
+        [HttpGet("/Get_last_English_News")]
+        public async Task<ActionResult> GetLastEnglishNews()
+        {
+            var News = await _unitOfWork.News.GetLastFourAsync();
+            if (News == null) return NotFound("There is no news created");
+
+            IEnumerable<EnglishNewsDto> englishNews = new List<EnglishNewsDto>() { };
+            foreach (var news in News)
+            {
+                englishNews.Append(new EnglishNewsDto()
+                {
+                    NewsId = news.NewsId,
+                    EnglishTitle = news.EnglishTitle,
+                    EnglishDescription = news.EnglishDescription,
+                    English_News_Date = news.English_News_Date,
+                    Image = news.Image,
+                });
+            }
+
+            return Ok(englishNews);
         }
 
         [HttpGet("/Search_For_Arabic_News")]
@@ -94,7 +209,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpPut("/Update_News")]
-        public async Task<IActionResult> Update(UpdateNewsDto NewsDto)
+        public async Task<ActionResult> Update(UpdateNewsDto NewsDto)
         {
             News News = await _unitOfWork.News.GetByIdAsync(n => n.NewsId == NewsDto.NewsId, new[] { "College" });
             
@@ -125,7 +240,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpDelete("/Delete_News/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var News = await _unitOfWork.News.GetByIdAsync(n => n.NewsId == id, new[] { "College" });
             if (News == null) return NotFound("News Not Found");

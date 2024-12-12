@@ -26,7 +26,7 @@ namespace FinalProject.Api.Controllers
 
         // POST: api/Employee/Create_Employee
         [HttpPost("/Create_Employee")]
-        public async Task<IActionResult> Create(EmployeeCreateDto employeeDto)
+        public async Task<ActionResult> Create(EmployeeCreateDto employeeDto)
         {
             var employee = new Employee()
             {
@@ -52,7 +52,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpPost("/Upload_CV")]
-        public async Task<IActionResult> UploadCV( int employeeId , IFormFile CVFile)
+        public async Task<ActionResult> UploadCV( int employeeId , IFormFile CVFile)
         {
             var employee = await _unitOfWork.Employees.GetByIdAsync(e => e.EmployeeId == employeeId);
             if (employee == null) return NotFound("Employee not found");
@@ -75,7 +75,7 @@ namespace FinalProject.Api.Controllers
 
         // GET: api/Employee/Get_Employee_By_Id/{id}
         [HttpGet("/Get_Employee_By_Id/{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
             Employee employee =await _unitOfWork.Employees.GetByIdAsync(e => e.EmployeeId == id, new[] { "Department" , "Unit" });
 
@@ -87,7 +87,7 @@ namespace FinalProject.Api.Controllers
 
         // GET: api/Employee/Get_All_Employees
         [HttpGet("/Get_All_Employees")]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult> GetAll()
         {
             IEnumerable<Employee> employees =await _unitOfWork.Employees.GetAllAsync(null,new[] { "Department" , "Unit" });
 
@@ -98,7 +98,7 @@ namespace FinalProject.Api.Controllers
 
         // PUT: api/Employee/Update_Employee
         [HttpPut("/Update_Employee")]
-        public async Task<IActionResult> Update(EmployeeUpdateDto employeeDto)
+        public async Task<ActionResult> Update(EmployeeUpdateDto employeeDto)
         {
             Employee employee =await _unitOfWork.Employees.GetByIdAsync(e => e.EmployeeId == employeeDto.EmployeeId, new[] { "Department" });
             if (employee == null) return NotFound("Employee not found");
@@ -131,7 +131,7 @@ namespace FinalProject.Api.Controllers
 
         // DELETE: api/Employee/Delete_Employee/{id}
         [HttpDelete("/Delete_Employee/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             Employee employee =await _unitOfWork.Employees.GetByIdAsync(e => e.EmployeeId == id, new[] { "Department" });
 

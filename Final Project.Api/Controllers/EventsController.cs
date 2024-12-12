@@ -11,6 +11,7 @@ using FinalProject.EF;
 using FinalProject.Core;
 using FinalProject.Core.Dtos.EventDtos;
 using FinalProject.EF.Migrations;
+using FinalProject.Core.Dtos.NewsDtos;
 
 namespace FinalProject.Api.Controllers
 {
@@ -26,7 +27,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpPost("/Create_Event")]
-        public async Task<IActionResult> Create(CreateEvent EventDto) {
+        public async Task<ActionResult> Create(CreateEvent EventDto) {
             Event Event = new Event()
             {
                 ArabicTitle = EventDto.ArabicTitle,
@@ -51,35 +52,154 @@ namespace FinalProject.Api.Controllers
             return Ok(Event);
         }
 
-        [HttpGet("/Get_Event_By_Id/{id}")]
-        public async Task<IActionResult> Get(int id) {
-            var Event = await _unitOfWork.Events.GetByIdAsync(e=> e.EventId == id );
-            if (Event == null) return NotFound("News not found");
+        //[HttpGet("/Get_Event_By_Id/{id}")]
+        //public async Task<ActionResult> Get(int id) {
+        //    var Event = await _unitOfWork.Events.GetByIdAsync(e=> e.EventId == id );
+        //    if (Event == null) return NotFound("News not found");
 
-            return Ok(Event);
-        }
+        //    return Ok(Event);
+        //}
 
-        [HttpGet("/Get_All_Events")]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("/Get_Arabic_Event_By_Id/{id}")]
+        public async Task<ActionResult> GetArabic(int id)
         {
-            var Events = await _unitOfWork.Events.GetAllAsync(null);
-            if (Events == null) return NotFound("There is no news created");
+            var Event = await _unitOfWork.Events.GetByIdAsync(n => n.EventId == id);
+            if (Event == null) return NotFound("Event not found");
 
-            return Ok(Events);
+            ArabicEventDto arabicEvent = new ArabicEventDto()
+            {
+                EventId = Event.EventId,
+                ArabicTitle = Event.ArabicTitle,
+                ArabicDescription = Event.ArabicDescription,
+                Arabic_Event_Start_Date = Event.Arabic_Event_Start_Date,
+                Image = Event.Image,
+            };
+
+            return Ok(arabicEvent);
         }
 
-        [HttpGet("/Get_last_Events")]
-        public async Task<IActionResult> GetLastEvents()
+        [HttpGet("/Get_English_Event_By_Id/{id}")]
+        public async Task<ActionResult> GetEnglish(int id)
+        {
+            var Event = await _unitOfWork.Events.GetByIdAsync(n => n.EventId == id);
+            if (Event == null) return NotFound("Event not found");
+
+            EnglishEventDto englishEvent = new EnglishEventDto()
+            {
+                EventId = Event.EventId,
+                EnglishTitle = Event.EnglishTitle,
+                EnglishDescription = Event.EnglishDescription,
+                English_Event_Start_Date = Event.English_Event_Start_Date,
+                Image = Event.Image,
+            };
+
+            return Ok(englishEvent);
+        }
+
+
+        //[HttpGet("/Get_All_Events")]
+        //public async Task<ActionResult> GetAll()
+        //{
+        //    var Events = await _unitOfWork.Events.GetAllAsync(null);
+        //    if (Events == null) return NotFound("There is no news created");
+
+        //    return Ok(Events);
+        //}
+
+
+        [HttpGet("/Get_All_Arabic_Events")]
+        public async Task<ActionResult> GetAllArabic()
+        {
+            var AllEvents = await _unitOfWork.Events.GetAllAsync(null);
+            if (AllEvents == null) return NotFound("There is no Events created");
+
+            IEnumerable<ArabicEventDto> arabicEvent = new List<ArabicEventDto>() { };
+            foreach (var news in AllEvents)
+            {
+                arabicEvent.Append(new ArabicEventDto()
+                {
+                    EventId = news.EventId,
+                    ArabicTitle = news.ArabicTitle,
+                    ArabicDescription = news.ArabicDescription,
+                    Arabic_Event_Start_Date = news.Arabic_Event_Start_Date,
+                    Image = news.Image,
+                });
+            }
+
+            return Ok(arabicEvent);
+        }
+
+
+        [HttpGet("/Get_last_Arabic_Events")]
+        public async Task<ActionResult> GetLastArabicEvents()
         {
             var Events = await _unitOfWork.Events.GetLastFourAsync();
-            if (Events == null) return NotFound("There is no Event created");
+            if (Events == null) return NotFound("There is no news created");
 
-            return Ok(Events);
+            IEnumerable<ArabicEventDto> arabicEvents = new List<ArabicEventDto>() { };
+            foreach (var news in Events)
+            {
+                arabicEvents.Append(new ArabicEventDto()
+                {
+                    EventId = news.EventId,
+                    ArabicTitle = news.ArabicTitle,
+                    ArabicDescription = news.ArabicDescription,
+                    Arabic_Event_Start_Date = news.Arabic_Event_Start_Date,
+                    Image = news.Image,
+                });
+            }
+
+
+            return Ok(arabicEvents);
+        }
+
+        [HttpGet("/Get_All_English_Events")]
+        public async Task<ActionResult> GetAllEnglish()
+        {
+            var AllEvents = await _unitOfWork.Events.GetAllAsync(null);
+            if (AllEvents == null) return NotFound("There is no Events created");
+
+            IEnumerable<EnglishEventDto> englishEvents = new List<EnglishEventDto>() { };
+            foreach (var Event in AllEvents)
+            {
+                englishEvents.Append(new EnglishEventDto()
+                {
+                    EventId = Event.EventId,
+                    EnglishTitle = Event.EnglishTitle,
+                    EnglishDescription = Event.EnglishDescription,
+                    English_Event_Start_Date = Event.English_Event_Start_Date,
+                    Image = Event.Image,
+                });
+            }
+
+            return Ok(englishEvents);
+        }
+
+        [HttpGet("/Get_last_English_News")]
+        public async Task<ActionResult> GetLastEnglishNews()
+        {
+            var Events = await _unitOfWork.Events.GetLastFourAsync();
+            if (Events == null) return NotFound("There is no news created");
+
+            IEnumerable<EnglishEventDto> englishEvents = new List<EnglishEventDto>() { };
+            foreach (var news in Events)
+            {
+                englishEvents.Append(new EnglishEventDto()
+                {
+                    EventId = news.EventId,
+                    EnglishTitle = news.EnglishTitle,
+                    EnglishDescription = news.EnglishDescription,
+                    English_Event_Start_Date = news.English_Event_Start_Date,
+                    Image = news.Image,
+                });
+            }
+
+            return Ok(englishEvents);
         }
 
 
         [HttpPut("/Update_Event")]
-        public async Task<IActionResult> Update(UpdateEvent EventDto)
+        public async Task<ActionResult> Update(UpdateEvent EventDto)
         {
             Event Event = await _unitOfWork.Events.GetByIdAsync(e => e.EventId == EventDto.EventId);
 
@@ -108,7 +228,7 @@ namespace FinalProject.Api.Controllers
         }
 
         [HttpDelete("/Delete_Event/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var Event = await _unitOfWork.Events.GetByIdAsync(e => e.EventId == id);
             if (Event == null)
