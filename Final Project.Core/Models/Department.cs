@@ -11,10 +11,13 @@ namespace FinalProject.Core.Models
     public class Department
     {
         public int DepartmentId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string ArabicTitle { get; set; }
+        public string EnglishTitle { get; set; }
 
-        
+        public string ArabicDescription { get; set; }
+        public string EnglishDescription { get; set; }
+
+
 
         //[ForeignKey ("Head_Of_Department")]
         //public int Head_Of_DepartmentEmployeeId { get; set; }

@@ -42,8 +42,11 @@ namespace FinalProject.Api.Controllers
 
             var unit = new Unit()
             {
-                Name = unitDto.Name,
-                Description = unitDto.Description,
+                ArabicTitle = unitDto.ArabicTitle,
+                EnglishTitle = unitDto.EnglishTitle,
+
+                ArabicDescription = unitDto.ArabicDescription,
+                EnglishDescription = unitDto.EnglishDescription,
                 //Head_Of_Unit = headOfUnit,
                 //Employees = employees.ToList() 
             };
@@ -106,9 +109,12 @@ namespace FinalProject.Api.Controllers
              unit = new Unit()
             {
                  UnitId = unitDto.UnitId,
-                Name = unitDto.Name,
-                Description = unitDto.Description,
-                Head_Of_Unit = headOfUnit,
+                 ArabicTitle = unitDto.ArabicTitle,
+                 EnglishTitle = unitDto.EnglishTitle,
+
+                 ArabicDescription = unitDto.ArabicDescription,
+                 EnglishDescription = unitDto.EnglishDescription,
+                 Head_Of_Unit = headOfUnit,
                 //Employees = employees.ToList()
             };
 

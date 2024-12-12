@@ -10,7 +10,8 @@ namespace FinalProject.Core.Dtos.CourseDtos
     public class CreateCourseDto
     {
         //public int CourseId { get; set; }
-        public string Title { get; set; }
+        public string ArabicTitle { get; set; }
+        public string EnglishTitle { get; set; }
         public string LevelYear { get; set; }
         public IFormFile PdfDescription { get; set; }
         public int? DepartmentId { get; set; }

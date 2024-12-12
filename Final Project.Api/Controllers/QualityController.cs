@@ -31,8 +31,10 @@ namespace FinalProject.Api.Controllers
         {
             var Quality = new Core.Models.Quality()
             {
-                Name = QualityDto.Name,
-                Description = QualityDto.Description,
+                ArabicName = QualityDto.ArabicName,
+                EnglishName = QualityDto.EnglishName,
+                ArabicDescription = QualityDto.ArabicDescription,
+                EnglishDescription = QualityDto.EnglishDescription,
             };
             var QualityAdded = await _unitOfWork.Qualities.AddAsync(Quality);
             if (QualityAdded == null)
@@ -71,8 +73,10 @@ namespace FinalProject.Api.Controllers
             Quality = new()
             {
                 Id = QualityDto.Id,
-                Name = QualityDto.Name,
-                Description = QualityDto.Description,
+                ArabicName = QualityDto.ArabicName,
+                EnglishName = QualityDto.EnglishName,
+                ArabicDescription = QualityDto.ArabicDescription,
+                EnglishDescription = QualityDto.EnglishDescription,
             };
 
 

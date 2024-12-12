@@ -30,7 +30,8 @@ namespace FinalProject.Api.Controllers
         {
             Course course = new Course()
             {
-                Title = courseDto.Title,
+                ArabicTitle = courseDto.ArabicTitle,
+                EnglishTitle= courseDto.EnglishTitle,
                 LevelYear = courseDto.LevelYear,
                 //Description = courseDto.Description,
                 DepartmentId = courseDto.DepartmentId,
@@ -78,7 +79,8 @@ namespace FinalProject.Api.Controllers
              course = new Course()
             {
                 CourseId = courseDto.CourseId,
-                Title = courseDto.Title,
+                 ArabicTitle = courseDto.ArabicTitle,
+                 EnglishTitle = courseDto.EnglishTitle,
                  LevelYear = courseDto.LevelYear,
 
                  PdfDescription = _unitOfWork.Courses.UploadCourseFile(courseDto.PdfDescription, courseDto.CourseId),
