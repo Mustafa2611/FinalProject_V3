@@ -1,15 +1,8 @@
 ﻿using FinalProject.Core.Models;
 using FinalProject.Core;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using FinalProject.Core.Dtos.EmployeeDots;
-using FinalProject.Core.Models;
-using Microsoft.AspNetCore.Http;
-using FinalProject.Core.Dtos.CollegeDots;
-using System.Collections.Generic;
-using FinalProject.EF;
-using FinalProject.Core;
-using FinalProject.EF.Migrations;
+using FinalProject.Core.Dtos.EmployeeDtos;
 
 
 namespace FinalProject.Api.Controllers
@@ -73,28 +66,128 @@ namespace FinalProject.Api.Controllers
                 
         }
 
+        //// GET: api/Employee/Get_Employee_By_Id/{id}
+        //[HttpGet("/Get_Employee_By_Id/{id}")]
+        //public async Task<ActionResult> Get(int id)
+        //{
+        //    Employee employee =await _unitOfWork.Employees.GetByIdAsync(e => e.EmployeeId == id, new[] { "Department" , "Unit" });
+
+        //    if (employee == null)
+        //        return NotFound("Epmloyee not found");
+
+        //    return Ok(employee);
+        //}
+
         // GET: api/Employee/Get_Employee_By_Id/{id}
         [HttpGet("/Get_Employee_By_Id/{id}")]
-        public async Task<ActionResult> Get(int id)
+        public async Task<ActionResult> Get(int id , string lang)
         {
-            Employee employee =await _unitOfWork.Employees.GetByIdAsync(e => e.EmployeeId == id, new[] { "Department" , "Unit" });
+            Employee employee = await _unitOfWork.Employees.GetByIdAsync(e => e.EmployeeId == id, new[] { "Department", "Unit" });
 
             if (employee == null)
                 return NotFound("Epmloyee not found");
 
-            return Ok(employee);
+            switch (lang)
+            {
+                case "Ar":
+                    {
+                        var arabicEmp = new ArabicEmployeeDto()
+                        {
+                            EmployeeId = employee.EmployeeId,
+                            ArabicName = employee.ArabicName,
+                            ArabicJob_Title = employee.ArabicJob_Title,
+                            Email = employee.Email,
+                            Password = employee.Password,
+                            Image = employee.Image,
+                            Resume = employee.Resume,
+                        };
+                        return Ok(arabicEmp);
+                        
+                    }
+                case "En":
+                    {
+                        var englishEmp = new EnglishEmployeeDto()
+                        {
+                            EmployeeId = employee.EmployeeId,
+                            EnglishName = employee.EnglishName,
+                            EnglishJob_Title = employee.EnglishJob_Title,
+                            Email = employee.Email,
+                            Password = employee.Password,
+                            Image = employee.Image,
+                            Resume = employee.Resume,
+                        };
+                        return Ok(englishEmp);
+
+                    }
+            }
+
+
+            return BadRequest();
         }
 
         // GET: api/Employee/Get_All_Employees
+        //[HttpGet("/Get_All_Employees")]
+        //public async Task<ActionResult> GetAll()
+        //{
+        //    IEnumerable<Employee> employees =await _unitOfWork.Employees.GetAllAsync(null,new[] { "Department" , "Unit" });
+
+        //    if (employees == null) return NotFound("There is no employee added yet.");
+
+        //    return Ok(employees);
+        //}
+
         [HttpGet("/Get_All_Employees")]
-        public async Task<ActionResult> GetAll()
+        public async Task<ActionResult> GetAll(string lang)
         {
-            IEnumerable<Employee> employees =await _unitOfWork.Employees.GetAllAsync(null,new[] { "Department" , "Unit" });
+            IEnumerable<Employee> employees = await _unitOfWork.Employees.GetAllAsync(null, new[] { "Department", "Unit" });
 
             if (employees == null) return NotFound("There is no employee added yet.");
 
-            return Ok(employees);
+            switch (lang)
+            {
+                case "Ar":
+                    {
+                        IEnumerable<ArabicEmployeeDto> arabicEmployees = new List<ArabicEmployeeDto>() { };
+                        foreach (var employee in employees)
+                        {
+                            arabicEmployees.Append(new ArabicEmployeeDto()
+                            {
+                                EmployeeId = employee.EmployeeId,
+                                ArabicName = employee.ArabicName,
+                                ArabicJob_Title = employee.ArabicJob_Title,
+                                Email = employee.Email,
+                                Password = employee.Password,
+                                Image = employee.Image,
+                                Resume = employee.Resume,
+                            });
+                        }
+                        return Ok(arabicEmployees);
+                    }
+
+                case "En":
+                    {
+                        IEnumerable<EnglishEmployeeDto> englishEmployees = new List<EnglishEmployeeDto>() { };
+                        foreach (var employee in employees)
+                        {
+                            englishEmployees.Append(new EnglishEmployeeDto()
+                            {
+                                EmployeeId = employee.EmployeeId,
+                                EnglishName = employee.EnglishName,
+                                EnglishJob_Title = employee.EnglishJob_Title,
+                                Email = employee.Email,
+                                Password = employee.Password,
+                                Image = employee.Image,
+                                Resume = employee.Resume,
+                            });
+                        }
+                        return Ok(englishEmployees);
+                    }
+
+            }
+
+            return BadRequest();
         }
+
 
         // PUT: api/Employee/Update_Employee
         [HttpPut("/Update_Employee")]

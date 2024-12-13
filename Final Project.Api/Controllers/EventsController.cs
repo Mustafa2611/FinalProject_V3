@@ -52,150 +52,255 @@ namespace FinalProject.Api.Controllers
             return Ok(Event);
         }
 
-        //[HttpGet("/Get_Event_By_Id/{id}")]
-        //public async Task<ActionResult> Get(int id) {
-        //    var Event = await _unitOfWork.Events.GetByIdAsync(e=> e.EventId == id );
-        //    if (Event == null) return NotFound("News not found");
-
-        //    return Ok(Event);
-        //}
-
-        [HttpGet("/Get_Arabic_Event_By_Id/{id}")]
-        public async Task<ActionResult> GetArabic(int id)
+        [HttpGet("/Get_Event_By_Id/{id}")]
+        public async Task<ActionResult> Get(int id , string lang)
         {
-            var Event = await _unitOfWork.Events.GetByIdAsync(n => n.EventId == id);
-            if (Event == null) return NotFound("Event not found");
+            var Event = await _unitOfWork.Events.GetByIdAsync(e => e.EventId == id);
+            if (Event == null) return NotFound("News not found");
 
-            ArabicEventDto arabicEvent = new ArabicEventDto()
+            switch (lang)
             {
-                EventId = Event.EventId,
-                ArabicTitle = Event.ArabicTitle,
-                ArabicDescription = Event.ArabicDescription,
-                Arabic_Event_Start_Date = Event.Arabic_Event_Start_Date,
-                Image = Event.Image,
-            };
+                case "Ar":
+                    {
+                        ArabicEventDto arabicEvent = new ArabicEventDto()
+                        {
+                            EventId = Event.EventId,
+                            ArabicTitle = Event.ArabicTitle,
+                            ArabicDescription = Event.ArabicDescription,
+                            Arabic_Event_Start_Date = Event.Arabic_Event_Start_Date,
+                            Image = Event.Image,
+                        };
 
-            return Ok(arabicEvent);
-        }
+                        return Ok(arabicEvent);
 
-        [HttpGet("/Get_English_Event_By_Id/{id}")]
-        public async Task<ActionResult> GetEnglish(int id)
-        {
-            var Event = await _unitOfWork.Events.GetByIdAsync(n => n.EventId == id);
-            if (Event == null) return NotFound("Event not found");
+                    }
+                case "En":
+                    {
+                        EnglishEventDto englishEvent = new EnglishEventDto()
+                        {
+                            EventId = Event.EventId,
+                            EnglishTitle = Event.EnglishTitle,
+                            EnglishDescription = Event.EnglishDescription,
+                            English_Event_Start_Date = Event.English_Event_Start_Date,
+                            Image = Event.Image,
+                        };
 
-            EnglishEventDto englishEvent = new EnglishEventDto()
-            {
-                EventId = Event.EventId,
-                EnglishTitle = Event.EnglishTitle,
-                EnglishDescription = Event.EnglishDescription,
-                English_Event_Start_Date = Event.English_Event_Start_Date,
-                Image = Event.Image,
-            };
+                        return Ok(englishEvent);
 
-            return Ok(englishEvent);
-        }
-
-
-        //[HttpGet("/Get_All_Events")]
-        //public async Task<ActionResult> GetAll()
-        //{
-        //    var Events = await _unitOfWork.Events.GetAllAsync(null);
-        //    if (Events == null) return NotFound("There is no news created");
-
-        //    return Ok(Events);
-        //}
-
-
-        [HttpGet("/Get_All_Arabic_Events")]
-        public async Task<ActionResult> GetAllArabic()
-        {
-            var AllEvents = await _unitOfWork.Events.GetAllAsync(null);
-            if (AllEvents == null) return NotFound("There is no Events created");
-
-            IEnumerable<ArabicEventDto> arabicEvent = new List<ArabicEventDto>() { };
-            foreach (var news in AllEvents)
-            {
-                arabicEvent.Append(new ArabicEventDto()
-                {
-                    EventId = news.EventId,
-                    ArabicTitle = news.ArabicTitle,
-                    ArabicDescription = news.ArabicDescription,
-                    Arabic_Event_Start_Date = news.Arabic_Event_Start_Date,
-                    Image = news.Image,
-                });
+                    }
             }
 
-            return Ok(arabicEvent);
+            return BadRequest();
         }
+
+        [HttpGet("/Get_All_Events")]
+        public async Task<ActionResult> GetAll(string lang)
+        {
+            var AllEvents = await _unitOfWork.Events.GetAllAsync(null);
+            if (AllEvents == null) return NotFound("There is no news created");
+
+            switch (lang)
+            {
+                case "Ar":
+                    {
+                        IEnumerable<ArabicEventDto> arabicEvent = new List<ArabicEventDto>() { };
+                        foreach (var news in AllEvents)
+                        {
+                            arabicEvent.Append(new ArabicEventDto()
+                            {
+                                EventId = news.EventId,
+                                ArabicTitle = news.ArabicTitle,
+                                ArabicDescription = news.ArabicDescription,
+                                Arabic_Event_Start_Date = news.Arabic_Event_Start_Date,
+                                Image = news.Image,
+                            });
+                        }
+
+                        return Ok(arabicEvent);
+
+                    }
+
+                case "En":
+                    {
+                        IEnumerable<EnglishEventDto> englishEvents = new List<EnglishEventDto>() { };
+                        foreach (var Event in AllEvents)
+                        {
+                            englishEvents.Append(new EnglishEventDto()
+                            {
+                                EventId = Event.EventId,
+                                EnglishTitle = Event.EnglishTitle,
+                                EnglishDescription = Event.EnglishDescription,
+                                English_Event_Start_Date = Event.English_Event_Start_Date,
+                                Image = Event.Image,
+                            });
+                        }
+
+                        return Ok(englishEvents);
+
+                    }
+            }
+
+
+            return BadRequest();
+        }
+
+
+
+        //[HttpGet("/Get_Arabic_Event_By_Id/{id}")]
+        //public async Task<ActionResult> GetArabic(int id)
+        //{
+        //    var Event = await _unitOfWork.Events.GetByIdAsync(n => n.EventId == id);
+        //    if (Event == null) return NotFound("Event not found");
+
+        //    ArabicEventDto arabicEvent = new ArabicEventDto()
+        //    {
+        //        EventId = Event.EventId,
+        //        ArabicTitle = Event.ArabicTitle,
+        //        ArabicDescription = Event.ArabicDescription,
+        //        Arabic_Event_Start_Date = Event.Arabic_Event_Start_Date,
+        //        Image = Event.Image,
+        //    };
+
+        //    return Ok(arabicEvent);
+        //}
+
+        //[HttpGet("/Get_English_Event_By_Id/{id}")]
+        //public async Task<ActionResult> GetEnglish(int id)
+        //{
+        //    var Event = await _unitOfWork.Events.GetByIdAsync(n => n.EventId == id);
+        //    if (Event == null) return NotFound("Event not found");
+
+        //    EnglishEventDto englishEvent = new EnglishEventDto()
+        //    {
+        //        EventId = Event.EventId,
+        //        EnglishTitle = Event.EnglishTitle,
+        //        EnglishDescription = Event.EnglishDescription,
+        //        English_Event_Start_Date = Event.English_Event_Start_Date,
+        //        Image = Event.Image,
+        //    };
+
+        //    return Ok(englishEvent);
+        //}
+
+
+
+        //[HttpGet("/Get_All_Arabic_Events")]
+        //public async Task<ActionResult> GetAllArabic()
+        //{
+        //    var AllEvents = await _unitOfWork.Events.GetAllAsync(null);
+        //    if (AllEvents == null) return NotFound("There is no Events created");
+
+        //    IEnumerable<ArabicEventDto> arabicEvent = new List<ArabicEventDto>() { };
+        //    foreach (var news in AllEvents)
+        //    {
+        //        arabicEvent.Append(new ArabicEventDto()
+        //        {
+        //            EventId = news.EventId,
+        //            ArabicTitle = news.ArabicTitle,
+        //            ArabicDescription = news.ArabicDescription,
+        //            Arabic_Event_Start_Date = news.Arabic_Event_Start_Date,
+        //            Image = news.Image,
+        //        });
+        //    }
+
+        //    return Ok(arabicEvent);
+        //}
 
 
         [HttpGet("/Get_last_Arabic_Events")]
-        public async Task<ActionResult> GetLastArabicEvents()
+        public async Task<ActionResult> GetLastArabicEvents(string lang)
         {
             var Events = await _unitOfWork.Events.GetLastFourAsync();
             if (Events == null) return NotFound("There is no news created");
 
-            IEnumerable<ArabicEventDto> arabicEvents = new List<ArabicEventDto>() { };
-            foreach (var news in Events)
+            switch (lang)
             {
-                arabicEvents.Append(new ArabicEventDto()
-                {
-                    EventId = news.EventId,
-                    ArabicTitle = news.ArabicTitle,
-                    ArabicDescription = news.ArabicDescription,
-                    Arabic_Event_Start_Date = news.Arabic_Event_Start_Date,
-                    Image = news.Image,
-                });
+                case "Ar":
+                    {
+                        IEnumerable<ArabicEventDto> arabicEvents = new List<ArabicEventDto>() { };
+                        foreach (var news in Events)
+                        {
+                            arabicEvents.Append(new ArabicEventDto()
+                            {
+                                EventId = news.EventId,
+                                ArabicTitle = news.ArabicTitle,
+                                ArabicDescription = news.ArabicDescription,
+                                Arabic_Event_Start_Date = news.Arabic_Event_Start_Date,
+                                Image = news.Image,
+                            });
+                        }
+                        return Ok(arabicEvents);
+
+                    }
+
+                case "En":
+                    {
+                        IEnumerable<EnglishEventDto> englishEvents = new List<EnglishEventDto>() { };
+                        foreach (var news in Events)
+                        {
+                            englishEvents.Append(new EnglishEventDto()
+                            {
+                                EventId = news.EventId,
+                                EnglishTitle = news.EnglishTitle,
+                                EnglishDescription = news.EnglishDescription,
+                                English_Event_Start_Date = news.English_Event_Start_Date,
+                                Image = news.Image,
+                            });
+                        }
+
+                        return Ok(englishEvents);
+
+                    }
             }
 
 
-            return Ok(arabicEvents);
+            return BadRequest();
+
         }
 
-        [HttpGet("/Get_All_English_Events")]
-        public async Task<ActionResult> GetAllEnglish()
-        {
-            var AllEvents = await _unitOfWork.Events.GetAllAsync(null);
-            if (AllEvents == null) return NotFound("There is no Events created");
+        //[HttpGet("/Get_All_English_Events")]
+        //public async Task<ActionResult> GetAllEnglish()
+        //{
+        //    var AllEvents = await _unitOfWork.Events.GetAllAsync(null);
+        //    if (AllEvents == null) return NotFound("There is no Events created");
 
-            IEnumerable<EnglishEventDto> englishEvents = new List<EnglishEventDto>() { };
-            foreach (var Event in AllEvents)
-            {
-                englishEvents.Append(new EnglishEventDto()
-                {
-                    EventId = Event.EventId,
-                    EnglishTitle = Event.EnglishTitle,
-                    EnglishDescription = Event.EnglishDescription,
-                    English_Event_Start_Date = Event.English_Event_Start_Date,
-                    Image = Event.Image,
-                });
-            }
+        //    IEnumerable<EnglishEventDto> englishEvents = new List<EnglishEventDto>() { };
+        //    foreach (var Event in AllEvents)
+        //    {
+        //        englishEvents.Append(new EnglishEventDto()
+        //        {
+        //            EventId = Event.EventId,
+        //            EnglishTitle = Event.EnglishTitle,
+        //            EnglishDescription = Event.EnglishDescription,
+        //            English_Event_Start_Date = Event.English_Event_Start_Date,
+        //            Image = Event.Image,
+        //        });
+        //    }
 
-            return Ok(englishEvents);
-        }
+        //    return Ok(englishEvents);
+        //}
 
-        [HttpGet("/Get_last_English_News")]
-        public async Task<ActionResult> GetLastEnglishNews()
-        {
-            var Events = await _unitOfWork.Events.GetLastFourAsync();
-            if (Events == null) return NotFound("There is no news created");
+        //[HttpGet("/Get_last_English_News")]
+        //public async Task<ActionResult> GetLastEnglishNews()
+        //{
+        //    var Events = await _unitOfWork.Events.GetLastFourAsync();
+        //    if (Events == null) return NotFound("There is no news created");
 
-            IEnumerable<EnglishEventDto> englishEvents = new List<EnglishEventDto>() { };
-            foreach (var news in Events)
-            {
-                englishEvents.Append(new EnglishEventDto()
-                {
-                    EventId = news.EventId,
-                    EnglishTitle = news.EnglishTitle,
-                    EnglishDescription = news.EnglishDescription,
-                    English_Event_Start_Date = news.English_Event_Start_Date,
-                    Image = news.Image,
-                });
-            }
+        //    IEnumerable<EnglishEventDto> englishEvents = new List<EnglishEventDto>() { };
+        //    foreach (var news in Events)
+        //    {
+        //        englishEvents.Append(new EnglishEventDto()
+        //        {
+        //            EventId = news.EventId,
+        //            EnglishTitle = news.EnglishTitle,
+        //            EnglishDescription = news.EnglishDescription,
+        //            English_Event_Start_Date = news.English_Event_Start_Date,
+        //            Image = news.Image,
+        //        });
+        //    }
 
-            return Ok(englishEvents);
-        }
+        //    return Ok(englishEvents);
+        //}
 
 
         [HttpPut("/Update_Event")]

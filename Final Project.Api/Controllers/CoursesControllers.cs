@@ -11,6 +11,7 @@ using FinalProject.EF.Migrations;
 using System.Collections.Generic;
 using FinalProject.EF;
 using FinalProject.Core;
+using FinalProject.Core.Dtos.CourseDots;
 namespace FinalProject.Api.Controllers
 {
     [Route("api/[controller]")]
@@ -47,23 +48,89 @@ namespace FinalProject.Api.Controllers
 
         // GET: api/Course/Get_Course_By_Id/{id}
         [HttpGet("/Get_Course_By_Id/{id}")]
-        public async Task<ActionResult> Get(int id)
+        public async Task<ActionResult> Get(int id , string lang)
         {
             Course course =await _unitOfWork.Courses.GetByIdAsync(c => c.CourseId == id, new[] { "Department" });
             if (course == null)
                 return NotFound("Course not found");
 
-            return Ok(course);
+            switch (lang)
+            {
+                case "Ar":
+                    {
+                        var arabicCourse = new ArabicCourseDto()
+                        {
+                            CourseId = course.CourseId,
+                            ArabicTitle= course.ArabicTitle,
+                            LevelYear = course.LevelYear,
+                            PdfDescription= course.PdfDescription,
+                            DepartmentId = course.Department.DepartmentId,
+                            DepartmentName = course.Department.ArabicTitle,
+                        };
+                        return Ok(arabicCourse);
+                    }
+                case "En":
+                    {
+                        var englishCourse = new EnglishCourseDto()
+                        {
+                            CourseId = course.CourseId,
+                            EnglishTitle = course.EnglishTitle,
+                            LevelYear = course.LevelYear,
+                            PdfDescription = course.PdfDescription,
+                            DepartmentId = course.Department.DepartmentId,
+                            DepartmentName = course.Department.EnglishTitle,
+                        };
+                        return Ok(englishCourse);
+                    }
+            }
+
+            return BadRequest();
         }
 
         // GET: api/Course/Get_All_Courses
         [HttpGet("/Get_All_Courses")]
-        public async Task<ActionResult> GetAll()
+        public async Task<ActionResult> GetAll(string lang)
         {
             IEnumerable<Course> courses =await _unitOfWork.Courses.GetAllAsync(null,new[] { "Department" });
             if (courses == null) return NotFound("There is no course created yet.");
 
-            return Ok(courses);
+            switch (lang)
+            {
+                case "Ar":
+                    {
+                        IEnumerable<ArabicCourseDto> arabicCourses = new List<ArabicCourseDto>();
+                        foreach (var course in courses)
+                            arabicCourses.Append(new ArabicCourseDto()
+                            {
+                                CourseId = course.CourseId,
+                                ArabicTitle = course.ArabicTitle,
+                                LevelYear = course.LevelYear,
+                                PdfDescription = course.PdfDescription,
+                                DepartmentId = course.Department.DepartmentId,
+                                DepartmentName = course.Department.ArabicTitle,
+
+                            });
+                        return Ok(arabicCourses);
+                    }
+                case "En":
+                    {
+                        IEnumerable<EnglishCourseDto> englishCourses = new List<EnglishCourseDto>();
+                        foreach (var course in courses)
+                            englishCourses.Append(new EnglishCourseDto()
+                            {
+                                CourseId = course.CourseId,
+                                EnglishTitle = course.EnglishTitle,
+                                LevelYear = course.LevelYear,
+                                PdfDescription = course.PdfDescription,
+                                DepartmentId = course.Department.DepartmentId,
+                                DepartmentName = course.Department.EnglishTitle,
+
+                            });
+                        return Ok(englishCourses);
+                    }
+            }
+
+            return BadRequest();
         }
 
         // PUT: api/Course/Update_Course

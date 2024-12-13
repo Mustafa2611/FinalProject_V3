@@ -50,23 +50,112 @@ namespace FinalProject.Api.Controllers
         }
 
         // GET: api/Department/Get_Department_By_Id/{id}
+        //[HttpGet("/Get_Department_By_Id/{id}")]
+        //public async Task<ActionResult> Get(int id)
+        //{
+        //    Department department =await _unitOfWork.Departments.GetByIdAsync(d => d.DepartmentId == id, new[] { "College", "Head_Of_Department", "Employees", "Courses" });
+        //    if (department == null) return NotFound("Department not found");
+
+        //    return Ok(department);
+        //}
+
         [HttpGet("/Get_Department_By_Id/{id}")]
-        public async Task<ActionResult> Get(int id)
+        public async Task<ActionResult> Get(int id , string lang)
         {
-            Department department =await _unitOfWork.Departments.GetByIdAsync(d => d.DepartmentId == id, new[] { "College", "Head_Of_Department", "Employees", "Courses" });
+            Department department = await _unitOfWork.Departments.GetByIdAsync(d => d.DepartmentId == id, new[] { "College", "Head_Of_Department", "Employees", "Courses" });
             if (department == null) return NotFound("Department not found");
 
-            return Ok(department);
+            switch (lang)
+            {
+                case "Ar":
+                    {
+                        var arabicDep = new ArabicDepartmentDto()
+                        {
+                            DepartmentId = department.DepartmentId,
+                            ArabicTitle = department.ArabicTitle,
+                            ArabicDescription = department.ArabicDescription,
+                            HeadOfDepartmentId = department.Head_Of_Department.EmployeeId,
+                            HeadOfDepartmentName = department.Head_Of_Department.ArabicName 
+                        };
+                        return Ok(arabicDep);
+                    }
+                case "En":
+                    {
+                        var englishDep = new EnglishDepartmentDto()
+                        {
+                            DepartmentId = department.DepartmentId,
+                            EnglishTitle = department.EnglishTitle,
+                            EnglishDescription = department.EnglishDescription,
+                            HeadOfDepartmentId = department.Head_Of_Department.EmployeeId,
+                            HeadOfDepartmentName = department.Head_Of_Department.EnglishName
+                        };
+                        return Ok(englishDep);
+
+                    }
+            }
+
+            return BadRequest();
         }
 
         // GET: api/Department/Get_All_Departments
+        //[HttpGet("/Get_All_Departments")]
+        //public async Task<ActionResult> GetAll()
+        //{
+        //    IEnumerable<Department> departments =await _unitOfWork.Departments.GetAllAsync(null,new[] { "College" , "Head_Of_Department" , "Employees" , "Courses" });
+        //    if (departments == null) return NotFound("There is no department created yet");
+
+        //    return Ok(departments);
+        //}
+
         [HttpGet("/Get_All_Departments")]
-        public async Task<ActionResult> GetAll()
+        public async Task<ActionResult> GetAll(string lang)
         {
-            IEnumerable<Department> departments =await _unitOfWork.Departments.GetAllAsync(null,new[] { "College" , "Head_Of_Department" , "Employees" , "Courses" });
+            IEnumerable<Department> departments = await _unitOfWork.Departments.GetAllAsync(null, new[] { "College", "Head_Of_Department", "Employees", "Courses" });
             if (departments == null) return NotFound("There is no department created yet");
 
-            return Ok(departments);
+
+            switch (lang)
+            {
+                case "Ar":
+                    {
+                        IEnumerable<ArabicDepartmentDto> arabicDep = new List<ArabicDepartmentDto>();
+                        foreach (var dep in departments)
+                        {
+                            arabicDep.Append(new ArabicDepartmentDto()
+                            {
+                                DepartmentId = dep.DepartmentId,
+                                ArabicTitle = dep.ArabicTitle,
+                                ArabicDescription = dep.ArabicDescription,
+                                HeadOfDepartmentId = dep.Head_Of_Department.EmployeeId,
+                                HeadOfDepartmentName = dep.Head_Of_Department.ArabicName
+
+                            });
+                        }
+                        
+                        return Ok(arabicDep);
+                    }
+                case "En":
+                    {
+                        IEnumerable<EnglishDepartmentDto> englishDep = new List<EnglishDepartmentDto>();
+                        foreach (var dep in departments)
+                        {
+                            englishDep.Append(new EnglishDepartmentDto()
+                            {
+                                DepartmentId = dep.DepartmentId,
+                                EnglishTitle = dep.EnglishTitle,
+                                EnglishDescription = dep.EnglishDescription,
+                                HeadOfDepartmentId = dep.Head_Of_Department.EmployeeId,
+                                HeadOfDepartmentName = dep.Head_Of_Department.EnglishName
+
+                            });
+                        }
+
+                        return Ok(englishDep);
+
+                    }
+            }
+
+            return BadRequest();
         }
 
         // PUT: api/Department/Update_Department
