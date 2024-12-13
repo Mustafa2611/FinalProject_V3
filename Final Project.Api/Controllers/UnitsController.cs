@@ -63,24 +63,86 @@ namespace FinalProject.Api.Controllers
 
         // GET: api/Unit/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetById(int id)
+        public async Task<ActionResult> GetById(int id , string lang)
         {
             var unit =await _unitOfWork.Units.GetByIdAsync(u=> u.UnitId == id, new[] { "Head_Of_Unit", "Employees"  });
             if (unit == null)
                 return NotFound("Unit not Found");
 
-            return Ok(unit);
+            switch (lang)
+            {
+                case "Ar":
+                    {
+                        var arabicUnit = new ArabicUnitDto()
+                        {
+                            UnitId = unit.UnitId,
+                            ArabicTitle = unit.ArabicTitle,
+                            ArabicDescription = unit.ArabicDescription,
+                            HeadOfUnitId = unit.Head_Of_Unit.EmployeeId,
+                            HeadOfUnitName = unit.Head_Of_Unit.ArabicName
+                        };
+                        return Ok(arabicUnit);
+                    }
+                case "En":
+                    {
+                        var englishUnit = new EnglishUnitDto()
+                        {
+                            UnitId = unit.UnitId,
+                            EnglishTitle = unit.EnglishTitle,
+                            EnglishDescription = unit.EnglishDescription,
+                            HeadOfUnitId = unit.Head_Of_Unit.EmployeeId,
+                            HeadOfUnitName = unit.Head_Of_Unit.EnglishName,
+                        };
+                        return Ok(englishUnit);
+                    }
+
+            }
+
+            return BadRequest();
         }
 
         // GET: api/Unit
         [HttpGet]
-        public async Task<ActionResult> GetAll()
+        public async Task<ActionResult> GetAll(string lang)
         {
             var units =await _unitOfWork.Units.GetAllAsync( null, new[] { "Head_Of_Unit", "Employees" });
             if (units == null || !units.Any())
                 return NotFound("There is no unit created yet.");
 
-            return Ok(units);
+            switch (lang)
+            {
+                case "Ar":
+                    {
+                        IEnumerable<ArabicUnitDto> arabicUnits = new List<ArabicUnitDto>();
+                        foreach (var unit in units)
+                            arabicUnits.Append(new ArabicUnitDto()
+                            {
+                                UnitId = unit.UnitId,
+                                ArabicTitle = unit.ArabicTitle,
+                                ArabicDescription = unit.ArabicDescription,
+                                HeadOfUnitId = unit.Head_Of_Unit.EmployeeId,
+                                HeadOfUnitName = unit.Head_Of_Unit.ArabicName
+                            });
+                        return Ok(arabicUnits);
+                    }
+                case "En":
+                    {
+                        IEnumerable<EnglishUnitDto> englishUnits = new List<EnglishUnitDto>();
+                        foreach (var unit in units)
+                            englishUnits.Append(new EnglishUnitDto()
+                            {
+                                UnitId = unit.UnitId,
+                                EnglishTitle = unit.EnglishTitle,
+                                EnglishDescription = unit.EnglishDescription,
+                                HeadOfUnitId = unit.Head_Of_Unit.EmployeeId,
+                                HeadOfUnitName = unit.Head_Of_Unit.EnglishName,
+
+                            });
+                        return Ok(englishUnits);
+                    }
+            }
+
+            return BadRequest();
         }
 
         // PUT: api/Unit/
